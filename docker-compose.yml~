@@ -1,0 +1,40 @@
+services:
+  backend:
+    build: ./backend
+    container_name: laundry_backend
+    #command: python manage.py runserver 0.0.0.0:8000
+    command: tail -f /dev/null
+    volumes:
+      - ./backend:/app
+    ports:
+      - "8000:8000"
+    environment:
+      - DB_NAME=laundrydb
+      - DB_USER=laundryuser
+      - DB_PASSWORD=laundrypass
+      - DB_HOST=db
+    depends_on:
+      - db
+
+  db:
+    image: postgres:15
+    container_name: laundry_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_DB=laundrydb
+      - POSTGRES_USER=laundryuser
+      - POSTGRES_PASSWORD=laundrypass
+
+  frontend:
+    image: node:20-alpine
+    container_name: laundry_frontend
+    command: sh -c "yarn create vite . --template vue && yarn dev --host"
+    volumes:
+      - ./frontend:/app
+    working_dir: /app
+    ports:
+      - "5173:5173"
+
+volumes:
+  postgres_data:
