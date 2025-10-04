@@ -1,2 +1,6 @@
 django==4.2.*
 psycopg2-binary
+djangorestframework-simplejwt
+Pillow
+django-safedelete
+django-cors-headers

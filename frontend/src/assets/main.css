@@ -1,0 +1,25 @@
+html {
+    box-sizing: border-box;
+}
+
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+/* Definisikan variabel warna dan font untuk seluruh aplikasi */
+:root {
+    --primary-color: #A288E3; /* Ungu muda untuk tombol & aksen */
+    --primary-hover: #8e72c7; /* Ungu sedikit lebih gelap untuk hover */
+    --background-color: #F4F3F8; /* Latar belakang halaman, sedikit keunguan */
+    --form-background: #FFFFFF; /* Warna putih untuk kartu form */
+    --text-color: #333333; /* Warna teks utama */
+    --input-border-color: #DDDDDD; /* Warna border input */
+    --error-color: #FF6B6B; /* Warna untuk pesan error */
+    --main-font: 'Poppins', sans-serif; /* Font utama kita */
+}
+
+/* Terapkan style dasar ke seluruh halaman */
+body {
+    margin: 0; /* Hilangkan margin default dari browser */
+    font-family: var(--main-font); /* Terapkan font utama secara global */
+    background-color: var(--background-color); /* Terapkan warna latar belakang global */
+}
