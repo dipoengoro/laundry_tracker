@@ -1,25 +1,33 @@
-import { createRouter, createWebHistory } from "vue-router";
+import {createRouter, createWebHistory} from "vue-router";
+import MainLayout from "../layouts/MainLayout.vue";
+
 import Register from "../views/Register.vue";
 import Login from "../views/Login.vue";
 import Catalog from "../views/Catalog.vue";
 
 const routes = [
     {
-        path: '/register',
-        name: 'Register',
-        component: Register
+        path: '/',
+        component: MainLayout,
+        meta: {requiredAuth: true},
+        children: [
+            {
+                path: '',
+                name: 'Catalog',
+                component: Catalog,
+            },
+        ]
     },
     {
         path: '/login',
         name: 'Login',
-        component: Login
+        component: Login,
     },
     {
-        path: '/',
-        name: 'Catalog',
-        component: Catalog,
-        meta: { requiredAuth: true }
-    }
+        path: '/register',
+        name: 'Register',
+        component: Register
+    },
 ];
 
 const router = createRouter({
@@ -29,11 +37,10 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
     const loggedIn = localStorage.getItem("authToken");
-    if (to.meta.requiredAuth && !loggedIn) {
-        // Jika rute butuh login & tidak ada token, paksa ke halaman login
-        next("/login");
+
+    if (to.matched.some(record => record.meta.requiredAuth) && !loggedIn) {
+        next('/login');
     } else {
-        // Jika tidak, latjutkan seperti biasa
         next();
     }
 });
