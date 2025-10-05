@@ -33,6 +33,7 @@
 import { ref } from 'vue';
 import apiClient from "../services/ApiClient.js";
 import {useRouter} from "vue-router";
+import {apiRoutes} from "../services/apiRoutes.js";
 
 const username = ref('');
 const email = ref('');
@@ -48,7 +49,7 @@ const handleRegister = async () => {
     return;
   }
   try {
-    const response = await apiClient.post('/users/register/', {
+    const response = await apiClient.post(apiRoutes.REGISTER, {
       username: username.value,
       email: email.value,
       password: password.value,

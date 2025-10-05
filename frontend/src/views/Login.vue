@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import apiClient from "../services/ApiClient.js";
 import { useRouter } from 'vue-router';
+import { apiRoutes } from "../services/apiRoutes.js";
 
 const email = ref('');
 const password = ref('');
@@ -11,12 +12,18 @@ const router = useRouter();
 const handleLogin = async () => {
   error.value = null;
   try {
-    const response = await apiClient.post('/token/', {
+    const response = await apiClient.post(apiRoutes.LOGIN, {
       email: email.value,
       password: password.value,
     });
-    console.log('Login berhasil! Token diterima: ', response.data.access);
-    localStorage.setItem('authToken', response.data.access);
+    const newToken = response.data.access;
+    console.log('TOKEN BARU DITERIMA: ', newToken);
+
+    // Simpan token untuk penggunaan di masa depan (saat refresh halaman)
+    localStorage.setItem('authToken', newToken);
+
+    // Langsung terapkan token baru ke apiClient yang sedang aktif
+    apiClient.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
     router.push('/')
   } catch (error) {
     error.value = 'Email atau password salah.';

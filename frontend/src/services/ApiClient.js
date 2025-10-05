@@ -9,6 +9,10 @@ const apiClient = axios.create({
 
 // Interceptor untuk menambahkan token ke setiap request
 apiClient.interceptors.request.use(config => {
+    if (config.headers.Authorization) {
+        return config;
+    }
+
     const token = localStorage.getItem('authToken');
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;
